@@ -1,0 +1,49 @@
+<project name = "JUnitTest" default = "test" basedir = ".">
+   <property name = "testdir" location = "src/test/java" />
+   <property name = "srcdir" location = "src/main/java" />
+   <property name = "testclassdir" location = "bin/test" />
+   <property name = "srcclassdir" location = "bin/src" />
+   <property name = "full-compile" value = "true" />
+	
+   <path id = "classpath.base"/>
+	
+   <path id = "classpath.test">
+      <pathelement location = "lib/junit-4.10.jar" />
+      <pathelement location = "lib/ant-junit-1.8.4.jar" />
+      <pathelement location = "lib/mockito-all-1.9.5.jar" />
+      <pathelement location = "${testdir}" />
+      <pathelement location = "${srcdir}" />
+      <pathelement location = "${testclassdir}" />
+      <pathelement location = "${srcclassdir}" />
+      <path refid = "classpath.base" />
+   </path>
+	
+   <target name = "clean" >
+      <delete verbose = "${full-compile}" failonerror="false">
+         <fileset dir = "${testclassdir}" includes = "**/*.class" />
+         <fileset dir = "${srcclassdir}" includes = "**/*.class" />
+      </delete>
+      <mkdir dir="${testclassdir}" />
+      <mkdir dir="${srcclassdir}" />
+      
+   </target>
+	
+   <target name = "compile" depends = "clean">
+      <javac srcdir = "${srcdir}" destdir = "${srcclassdir}" 
+         verbose = "${full-compile}">
+         <classpath refid = "classpath.test"/>
+      </javac>
+      <javac srcdir = "${testdir}" destdir = "${testclassdir}" 
+         verbose = "${full-compile}">
+         <classpath refid = "classpath.test"/>
+      </javac>
+	</target>
+	
+   <target name = "test" depends = "compile">
+   	<junit haltonfailure="false" printsummary="true">
+         <test name = "com.rk.practice.BeforeAfterTestCase" />
+      </junit>
+   </target>
+
+	
+</project>
